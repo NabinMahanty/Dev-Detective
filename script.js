@@ -23,6 +23,7 @@ async function fetchUser(username) {
 
     const data = await response.json();
     displayUser(data);
+    fetchMoreData(username);
     statusText.textContent = "";
   } catch (error) {
     statusText.textContent = error.message;
@@ -35,8 +36,42 @@ function displayUser(user) {
       <img src="${user.avatar_url}">
       <h2>${user.name || "No Name"}</h2>
       <p>${user.bio || "No Bio"}</p>
+      <p>${user.location || "No location"}</p>
       <p>Joined: ${new Date(user.created_at).toDateString()}</p>
       <a href="${user.blog}" target="_blank">${user.blog}</a>
     </div>
   `;
+}
+
+async function fetchMoreData(username) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${username}/repos`,
+    );
+    if (!response.ok) {
+      throw new Error("Repositories Not Found");
+    }
+    const data = await response.json();
+    displayRepos(data);
+  } catch (error) {
+    statusText.textContent = error.message;
+  }
+}
+
+function displayRepos(repos) {
+  const repoContainer = document.createElement("div");
+  repoContainer.className = "repos";
+  repoContainer.innerHTML = "<h3>Repositories:</h3>";
+
+  repos.slice(0, 5).forEach((repo) => {
+    const repoCard = document.createElement("div");
+    repoCard.className = "repo-card";
+    repoCard.innerHTML = `
+      <h4><a href="${repo.html_url}" target="_blank">${repo.name}</a></h4>
+      <p>${repo.description || "No description"}</p>
+    `;
+    repoContainer.appendChild(repoCard);
+  });
+
+  profile.appendChild(repoContainer);
 }
