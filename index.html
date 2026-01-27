@@ -2,17 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dev Detective</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="background-gradient"></div>
     <div class="main-container">
-      <h1>Dev Detective</h1>
+      <div class="header">
+        <h1>🔍 Dev Detective</h1>
+        <p class="subtitle">Discover Developers</p>
+      </div>
 
-      <input type="text" id="searchInput" placeholder="Enter GitHub username" />
-      <button id="searchBtn">Search</button>
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Enter GitHub username"
+        />
+        <button id="searchBtn">
+          <span>Search</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
 
-      <p id="status"></p>
+      <p id="status" class="status-message"></p>
       <div id="profile"></div>
     </div>
     <script src="script.js"></script>
