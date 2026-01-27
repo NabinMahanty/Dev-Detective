@@ -2,6 +2,50 @@ const searchBtn = document.getElementById("searchBtn");
 const input = document.getElementById("searchInput");
 const profile = document.getElementById("profile");
 const statusText = document.getElementById("status");
+const battleToggleBtn = document.getElementById("battleToggleBtn");
+const singleMode = document.getElementById("singleMode");
+const battleMode = document.getElementById("battleMode");
+const fightBtn = document.getElementById("fightBtn");
+
+let isBattleOn = false;
+battleToggleBtn.addEventListener("click", () => {
+  isBattleOn = !isBattleOn;
+
+  if (isBattleOn) {
+    singleMode.style.display = "none";
+    battleMode.style.display = "block";
+  } else {
+    singleMode.style.display = "block";
+    battleMode.style.display = "none";
+  }
+});
+
+fightBtn.addEventListener("click", () => {
+  const u1 = document.getElementById("user1").value.trim();
+  const u2 = document.getElementById("user2").value.trim();
+  if (u1 && u2) {
+    battleUser(u1, u2);
+  }
+});
+
+async function battleUser(u1, u2) {
+  const [r1, r2] = await Promise.all([
+    fetch(`https://api.github.com/users/${u1}`),
+    fetch(`https://api.github.com/users/${u2}`),
+  ]);
+  const d1 = await r1.json();
+  const d2 = await r2.json();
+  showWinner(d1, d2);
+}
+
+function showWinner(a, b) {
+  const winner = a.followers > b.followers ? a : b;
+  const loser = a.followers > b.followers ? b : a;
+
+  document.getElementById("battleResult").innerHTML =
+    `<p style="color:green">Winner: ${winner.login}</p>
+    <p style="color:red">Loser: ${loser.login}</p>`;
+}
 
 searchBtn.addEventListener("click", () => {
   const username = input.value.trim();
@@ -46,8 +90,7 @@ function displayUser(user) {
 async function fetchMoreData(username) {
   try {
     const response = await fetch(
-      `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=5
-`,
+      `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=5`,
     );
     if (!response.ok) {
       throw new Error("Repositories Not Found");
