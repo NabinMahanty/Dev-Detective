@@ -46,7 +46,8 @@ function displayUser(user) {
 async function fetchMoreData(username) {
   try {
     const response = await fetch(
-      `https://api.github.com/users/${username}/repos`,
+      `https://api.github.com/users/${username}/repos?sort=created&direction=desc&per_page=5
+`,
     );
     if (!response.ok) {
       throw new Error("Repositories Not Found");
