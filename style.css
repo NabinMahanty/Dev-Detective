@@ -24,6 +24,9 @@ body {
   z-index: 0;
   animation: gradientShift 15s ease infinite;
 }
+#battleMode {
+  display: none;
+}
 
 @keyframes gradientShift {
   0%,
