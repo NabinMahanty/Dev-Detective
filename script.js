@@ -10,41 +10,92 @@ const fightBtn = document.getElementById("fightBtn");
 let isBattleOn = false;
 
 battleToggleBtn.addEventListener("click", () => {
-  if (battleMode.style.display === "none") {
-    battleMode.style.display = "block";
-    singleMode.style.display = "none";
-    battleToggleBtn.textContent = "🔍 Search Mode";
-  } else {
+  const isBattleModeVisible = battleMode.style.display === "block";
+
+  if (isBattleModeVisible) {
+    // Switch to Search Mode
     battleMode.style.display = "none";
     singleMode.style.display = "block";
     battleToggleBtn.textContent = "⚔️ Battle Mode";
+    // Clear battle results when switching modes
+    document.getElementById("battleResult").innerHTML = "";
+  } else {
+    // Switch to Battle Mode
+    battleMode.style.display = "block";
+    singleMode.style.display = "none";
+    battleToggleBtn.textContent = "🔍 Search Mode";
+    // Clear profile when switching modes
+    profile.innerHTML = "";
+    statusText.textContent = "";
   }
 });
 
 fightBtn.addEventListener("click", () => {
   const u1 = document.getElementById("user1").value.trim();
   const u2 = document.getElementById("user2").value.trim();
+
+  if (!u1 || !u2) {
+    document.getElementById("battleResult").innerHTML = `
+      <div class="error-message">
+        <p>⚠️ Please enter both usernames to start the battle!</p>
+      </div>
+    `;
+    return;
+  }
+
   if (u1 && u2) {
     battleUser(u1, u2);
   }
 });
 
 async function battleUser(u1, u2) {
-  const [r1, r2] = await Promise.all([
-    fetch(`https://api.github.com/users/${u1}`),
-    fetch(`https://api.github.com/users/${u2}`),
-  ]);
-  const d1 = await r1.json();
-  const d2 = await r2.json();
+  // Show loading state
+  document.getElementById("battleResult").innerHTML = `
+    <div class="loading-message">
+      <p>⚔️ Preparing battle...</p>
+    </div>
+  `;
 
-  const [repos1, repos2] = await Promise.all([
-    fetch(`https://api.github.com/users/${u1}/repos?per_page=100`),
-    fetch(`https://api.github.com/users/${u2}/repos?per_page=100`),
-  ]);
-  const reposData1 = await repos1.json();
-  const reposData2 = await repos2.json();
+  try {
+    const [r1, r2] = await Promise.all([
+      fetch(`https://api.github.com/users/${u1}`),
+      fetch(`https://api.github.com/users/${u2}`),
+    ]);
 
-  showWinner(d1, d2, reposData1, reposData2);
+    // Check if both users exist
+    if (!r1.ok && !r2.ok) {
+      throw new Error(
+        `Both users "${u1}" and "${u2}" not found. Please check the usernames.`,
+      );
+    } else if (!r1.ok) {
+      throw new Error(`User "${u1}" not found. Please check the username.`);
+    } else if (!r2.ok) {
+      throw new Error(`User "${u2}" not found. Please check the username.`);
+    }
+
+    const d1 = await r1.json();
+    const d2 = await r2.json();
+
+    const [repos1, repos2] = await Promise.all([
+      fetch(`https://api.github.com/users/${u1}/repos?per_page=100`),
+      fetch(`https://api.github.com/users/${u2}/repos?per_page=100`),
+    ]);
+
+    if (!repos1.ok || !repos2.ok) {
+      throw new Error("Failed to fetch repositories. Please try again.");
+    }
+
+    const reposData1 = await repos1.json();
+    const reposData2 = await repos2.json();
+
+    showWinner(d1, d2, reposData1, reposData2);
+  } catch (error) {
+    document.getElementById("battleResult").innerHTML = `
+      <div class="error-message">
+        <p>❌ ${error.message}</p>
+      </div>
+    `;
+  }
 }
 
 function showWinner(a, b, reposA, reposB) {
@@ -145,7 +196,15 @@ async function fetchUser(username) {
     const response = await fetch(`https://api.github.com/users/${username}`);
 
     if (!response.ok) {
-      throw new Error("User Not Found");
+      if (response.status === 404) {
+        throw new Error(
+          `User "${username}" not found. Please check the username.`,
+        );
+      } else if (response.status === 403) {
+        throw new Error("API rate limit exceeded. Please try again later.");
+      } else {
+        throw new Error("Failed to fetch user data. Please try again.");
+      }
     }
 
     const data = await response.json();
@@ -154,6 +213,7 @@ async function fetchUser(username) {
     statusText.textContent = "";
   } catch (error) {
     statusText.textContent = error.message;
+    profile.innerHTML = "";
   }
 }
 

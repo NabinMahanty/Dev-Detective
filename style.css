@@ -24,8 +24,92 @@ body {
   z-index: 0;
   animation: gradientShift 15s ease infinite;
 }
+/* Battle Mode Toggle Button */
+#battleToggleBtn {
+  padding: 15px 35px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
+  animation: fadeInDown 0.8s ease 0.3s backwards;
+}
+
+#battleToggleBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.6);
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+}
+
+#battleToggleBtn:active {
+  transform: translateY(0);
+}
+
+/* Battle Mode Container */
 #battleMode {
   display: none;
+  animation: fadeInUp 0.5s ease;
+}
+
+/* Battle Mode Inputs */
+#battleMode input {
+  width: 100%;
+  max-width: 400px;
+  padding: 18px 25px;
+  margin: 15px auto;
+  display: block;
+  font-size: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  outline: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+#battleMode input::placeholder {
+  color: #888;
+}
+
+#battleMode input:focus {
+  border-color: #f093fb;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+/* Fight Button */
+#fightBtn {
+  padding: 18px 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 25px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+#fightBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
+}
+
+#fightBtn:active {
+  transform: translateY(0);
 }
 
 .battle-cards {
@@ -237,6 +321,56 @@ body {
   margin: 20px 0;
   font-weight: 500;
   animation: fadeIn 0.5s ease;
+}
+
+/* Error Message Styling */
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 2px solid #ef4444;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 500px;
+  text-align: center;
+  animation: scaleIn 0.4s ease;
+}
+
+.error-message p {
+  color: #ef4444;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Loading Message Styling */
+.loading-message {
+  background: rgba(102, 126, 234, 0.1);
+  border: 2px solid #667eea;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 500px;
+  text-align: center;
+  animation: pulse 1.5s ease infinite;
+}
+
+.loading-message p {
+  color: #667eea;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
 }
 
 #profile {
