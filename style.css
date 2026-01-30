@@ -28,6 +28,109 @@ body {
   display: none;
 }
 
+.battle-cards {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.result-card {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 3px solid;
+  animation: cardAppear 0.5s ease;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.winner-card {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+}
+
+.loser-card {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+}
+
+.result-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.winner-card h2 {
+  color: #22c55e;
+}
+
+.loser-card h2 {
+  color: #ef4444;
+}
+
+.result-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 4px solid;
+}
+
+.winner-card img {
+  border-color: #22c55e;
+}
+
+.loser-card img {
+  border-color: #ef4444;
+}
+
+.result-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: #fff;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #a0a0a0;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
 @keyframes gradientShift {
   0%,
   100% {
@@ -255,6 +358,65 @@ body {
   font-size: 0.95rem;
   line-height: 1.6;
 }
+
+.battle-card {
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.verdict table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.verdict th,
+.verdict td {
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.verdict th {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.battle-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.battle-user {
+  text-align: center;
+}
+
+.vs {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.comparison-table th {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 #battelMode {
   display: none;
 }
@@ -268,6 +430,7 @@ body {
   color: white;
   font-size: 16px;
 }
+
 @keyframes fadeInDown {
   from {
     opacity: 0;
